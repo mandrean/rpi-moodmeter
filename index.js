@@ -1,26 +1,30 @@
 var express = require('express');
+var Datastore = require('nedb');
+var db = new Datastore({ filename: 'mood.db', autoload: true });
 var app = express();
 
 app.set('view engine', 'jade');
+app.use(express.static('public'));
 
 // respond with "Hello World!" on the homepage
 app.get('/', function (req, res) {
-  res.render('index', { message: 'Hello world' });
+  db.loadDatabase();
+  db.find({ }, function(err, docs) {
+    var sum = docs
+      .map(function(doc) { return doc.value; })
+      .reduce(function(a, b) {
+        return a + b
+      }, 0);
+    sum = Math.round(sum / docs.length);
+    res.render('index', { icon: sum + '.gif' });
+  });
 });
 
-// accept POST request on the homepage
-app.post('/', function (req, res) {
-  res.send('Got a POST request');
-});
-
-// accept PUT request at /user
-app.put('/user', function (req, res) {
-  res.send('Got a PUT request at /user');
-});
-
-// accept DELETE request at /user
-app.delete('/user', function (req, res) {
-  res.send('Got a DELETE request at /user');
+app.get('/:mood', function(req, res) {
+  var mood = parseInt(req.params.mood);
+  db.insert({ value: mood }, function(err, doc) {
+    res.send('OK');
+  });
 });
 
 var server = app.listen(3000, function () {
