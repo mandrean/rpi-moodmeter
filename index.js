@@ -1,3 +1,4 @@
+
 var express = require('express');
 var Datastore = require('nedb');
 var db = new Datastore({ filename: 'mood.db', autoload: true });
