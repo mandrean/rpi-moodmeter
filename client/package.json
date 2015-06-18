@@ -1,0 +1,14 @@
+{
+  "name": "MoodMeterClient",
+  "version": "1.0.0",
+  "description": "MoodMeter Client application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maker's Day Group 3",
+  "license": "ISC",
+  "dependencies": {
+    "rpi-gpio": "^0.5.2"
+  }
+}
